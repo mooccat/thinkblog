@@ -3,7 +3,6 @@ module.exports = class extends Base {
   __before() {
     return Promise.resolve(super.__before()).then(flag => {
       if (flag === false) return false;
-     if()
       // 其他逻辑代码
     });
   }

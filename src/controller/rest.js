@@ -20,7 +20,6 @@ module.exports = class extends think.Controller {
   }
   getId() {
     const id = this.get('_id') || this.post('_id');
-    console.log(this.ctx.query);
     if (id && (think.isString(id) || think.isNumber(id))) {
       return id;
     }
@@ -54,7 +53,6 @@ module.exports = class extends think.Controller {
     try {
       const insertId = await this.modelInstance.create(data);
       // const insertId = await newInstance.save(data);
-      console.log(this.modelInstance);
       return this.success(insertId);
     } catch (e) {
       if (e.code == 11000) {
@@ -93,14 +91,12 @@ module.exports = class extends think.Controller {
       return this.fail('params error');
     }
     const pk = await this.modelInstance.pk;
-    console.log(pk);
     const data = this.post();
     delete data['_id'];
     if (think.isEmpty(data)) {
       return this.fail('data is empty');
     }
     try {
-      console.log(this.id + data);
       const rows = await this.modelInstance.update({
         _id: this.id
       }, data);

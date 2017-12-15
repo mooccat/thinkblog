@@ -10,7 +10,6 @@ module.exports = class extends think.Service {
     const tokenService = think.service('token');
     // 验证token
     const verifyTokenResult = tokenService.verifyToken(userToken);
-    console.log(verifyTokenResult);
     if (verifyTokenResult !== 'fail') {
       // 获取用户信息
       const user = verifyTokenResult;

@@ -24,7 +24,6 @@ module.exports = class extends Base {
       }
     };
     const flag = this.validate(rules);
-    console.log(this.ctx.state);
     if (!flag) {
       this.ctx.status = 400;
       this.fail('validate error', this.validateErrors);
