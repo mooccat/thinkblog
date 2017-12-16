@@ -63,6 +63,43 @@ module.exports = class extends Base {
       });
     }
   }
+  async registerAdminAction() {
+    try {
+      const user = this.mongoose('user', 'mongoose'); // use `mongoose` adapter type
+      const admin = await user.find({isAdmin:true});
+      if(admin.length>0){
+        this.status = 400;
+        return this.fail({errmsg:'已经存在管理员角色，请使用管理员账户增加角色'})
+      }
+      const tokenService = think.service('token');
+      const userInfo = {
+        email: this.post().email
+      };
+      const token = tokenService.createToken(userInfo);
+
+      const bcryptService = think.service('bcrypt');
+      const password = bcryptService.hashPassword(this.post().password);
+
+      const data = await new user({
+        email: this.post().email,
+        name: this.post().name,
+        password: password,
+        isAdmin:true,
+        token: token
+      }).save();
+      this.success(data);
+    } catch (e) {
+      if (e.code === 11000) {
+        this.status = 400;
+        return this.fail({
+          errmsg: '邮箱已经注册'
+        });
+      } else {
+        this.status = 500;
+        return this.fail(e);
+      }
+    }
+  }
   async loginupAction() {
     try {
       const user = this.mongoose('user', 'mongoose'); // use `mongoose` adapter type
