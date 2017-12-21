@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
+    "highlight": "^0.2.4",
+    "highlight.js": "^9.12.0",
     "jsonwebtoken": "^8.0.1",
+    "markdown-it": "^8.4.0",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
     "think-logger3": "^1.0.0",

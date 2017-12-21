@@ -31,7 +31,8 @@ module.exports = class extends think.Mongoose {
         type: Date,
         default: Date.now
       },
-      content: String
+      content: String,
+      html: String,
     });
     return schema;
   }
