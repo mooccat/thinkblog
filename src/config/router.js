@@ -1,4 +1,5 @@
 module.exports = [
+  ['/admin', '/index/admin', 'get'],
   ['/api/sort/:id?', '/sort', 'rest'],
   ['/api/article/:id?', '/article', 'rest'],
   ['/api/comment/:id?', '/comment', 'rest'],
