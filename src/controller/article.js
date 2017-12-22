@@ -1,19 +1,4 @@
 const BaseRest = require('./rest.js');
-var hljs = require('highlight.js');
-var md = require('markdown-it')({
-    html: true,
-    highlight: function (str, lang) {
-        if (lang && hljs.getLanguage(lang)) {
-            try {
-                return '<pre class="hljs"><code>' +
-                    hljs.highlight(lang, str, true).value +
-                    '</code></pre>';
-            } catch (__) {
-            }
-        }
-        return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
-    },
-});
 
 module.exports = class extends BaseRest {
   async getAction() {
@@ -35,9 +20,9 @@ module.exports = class extends BaseRest {
     try {
       const Article = this.mongoose('article', 'mongoose'); // use `mongoose` adapter type
       let newArticle = this.post()
-      if(newArticle.isMd){
-        newArticle.html = md.render(newArticle.content);
-      }
+      // if(newArticle.isMd){
+      //   newArticle.html = md.render(newArticle.content);
+      // }
       const article = new Article(newArticle)
       const data = await article.save();
       this.success(data);
