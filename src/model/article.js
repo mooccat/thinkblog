@@ -50,7 +50,7 @@ module.exports = class extends think.Mongoose {
       content: String
     });
     schema.virtual('html').get(function() {
-      if (this.md) {
+      if (this.isMd) {
         return md.render(this.content);
       } else {
         return this.content;
