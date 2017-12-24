@@ -55,8 +55,15 @@ module.exports = class extends think.Mongoose {
       } else {
         return this.content;
       }
+    }); 
+    schema.virtual('summary').get(function() {
+      if(this.html.split('<!--More-->')[1]){
+        return this.html.split('<!--More-->')[0]
+      }else{
+        return ""
+      }
     });
-    schema.set('toJSON', { virtuals: true });
+    schema.set('toJSON', { virtuals: true })
     return schema;
   }
 };

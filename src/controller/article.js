@@ -3,7 +3,7 @@ const BaseRest = require('./rest.js');
 module.exports = class extends BaseRest {
   async getAction() {
     const article = this.mongoose('article', 'mongoose'); // use `mongoose` adapter type
-    const data = await article.find(this.ctx.param()).populate({
+    const data = await article.find(this.ctx.param()).sort({creat_at:-1}).populate({
       path: 'sort',
       model: this.mongoose('sort', 'mongoose')
     }).populate({

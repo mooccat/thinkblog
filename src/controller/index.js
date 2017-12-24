@@ -1,7 +1,10 @@
 const Base = require('./base.js');
 
 module.exports = class extends Base {
-  adminAction() {
+  indexAction(){
     return this.display('index.html');
+  }
+  adminAction() {
+    return this.display('admin.html');
   }
 };

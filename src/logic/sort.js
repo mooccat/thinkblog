@@ -6,19 +6,20 @@ module.exports = class extends Base {
     return Promise.resolve(super.__before()).then(flag => {
       // 如果父级想阻止后续继承执行会返回 false，这里判断为 false 的话不再继续执行了。
       if (flag === false) return false;
-      
+      if(this.ctx.action != "get"){
+        if (!this.ctx.state.user) {
+          this.status = 401;
+          this.fail('请登录');
+          return false
+        }
+      }
       // 其他逻辑代码
     });
   }
   indexAction() {
-
+    
   }
   postAction() {
-    if (!this.ctx.state.user) {
-      this.status = 401;
-      this.fail('请登录');
-      return false
-    }
     const rules = {
       name: {
         string: true, // 字段类型为 String 类型
