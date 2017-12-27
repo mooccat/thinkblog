@@ -2,17 +2,26 @@ var hljs = require('highlight.js');
 var md = require('markdown-it')({
   html: true,
   highlight: function(str, lang) {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return hljs.highlight(lang, str).value;
-      } catch (err) {
-      }
-    }
+    // if (lang && hljs.getLanguage(lang)) {
+    //   try {
+    //     return hljs.highlight(lang, str).value;
+    //   } catch (err) {
+    //   }
+    // }
     try {
-      return hljs.highlightAuto(str).value;
+      return '<pre class="hljs">' + hljs.highlightAuto(str).value + '</pre>';
     } catch (err) {
     }
-    return '';
+
+    // if (lang && hljs.getLanguage(lang)) {
+    //   try {
+    //     return '<pre class="hljs"><code>' +
+    //                 hljs.highlight(lang, str, true).value +
+    //                 '</code></pre>';
+    //   } catch (__) {
+    //   }
+    // }
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
   }
 });
 
@@ -61,7 +70,7 @@ module.exports = class extends think.Mongoose {
     schema.virtual('summary').get(function() {
       if (this.html.split('<!--More-->')[1]) {
         return this.html.split('<!--More-->')[0];
-      } else {
+      } else{
         return '';
       }
     });
