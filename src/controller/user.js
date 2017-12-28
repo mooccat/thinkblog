@@ -40,6 +40,37 @@ module.exports = class extends Base {
       'email': this.post().email
     });
     const data = await user.findOne({
+      email: this.post().email,
+      isAdmin: true
+    });
+    if (data) {
+      const bcryptService = think.service('bcrypt');
+      if (bcryptService.compare(this.post().password, data.password)) {
+        await user.update({
+          email: this.post().email
+        }, {token: token});
+        data.token = token;
+        this.success(data);
+      } else {
+        this.ctx.status = 400;
+        this.fail({
+          errmsg: '密码错误'
+        });
+      }
+    } else {
+      this.ctx.status = 400;
+      this.fail({
+        errmsg: '该邮箱没有注册'
+      });
+    }
+  }
+  async loginAction() {
+    const user = this.mongoose('user', 'mongoose'); // use `mongoose` adapter type
+    const tokenService = think.service('token');
+    const token = tokenService.createToken({
+      'email': this.post().email
+    });
+    const data = await user.findOne({
       email: this.post().email
     });
     if (data) {
@@ -66,10 +97,10 @@ module.exports = class extends Base {
   async registerAdminAction() {
     try {
       const user = this.mongoose('user', 'mongoose'); // use `mongoose` adapter type
-      const admin = await user.find({isAdmin:true});
-      if(admin.length>0){
+      const admin = await user.find({isAdmin: true});
+      if (admin.length > 0) {
         this.status = 400;
-        return this.fail({errmsg:'已经存在管理员角色，请使用管理员账户增加角色'})
+        return this.fail({errmsg: '已经存在管理员角色，请使用管理员账户增加角色'});
       }
       const tokenService = think.service('token');
       const userInfo = {
@@ -84,7 +115,7 @@ module.exports = class extends Base {
         email: this.post().email,
         name: this.post().name,
         password: password,
-        isAdmin:true,
+        isAdmin: true,
         token: token
       }).save();
       this.success(data);
@@ -100,7 +131,7 @@ module.exports = class extends Base {
       }
     }
   }
-  async loginupAction() {
+  async registerAction() {
     try {
       const user = this.mongoose('user', 'mongoose'); // use `mongoose` adapter type
       const tokenService = think.service('token');
